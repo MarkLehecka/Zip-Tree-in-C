@@ -16,13 +16,6 @@ void createNode(int x){
 
 }
 
-
-
-
-
-
-
-
 Node* insert(Node* x, Node *root){
 
     //x->key = x; need to make sure i create the node with a key value before
@@ -39,7 +32,7 @@ Node* insert(Node* x, Node *root){
 
     if(x < root->key){
 
-        if(insert(x, root->left) ==x ){   
+        if(insert(x, root->left) == x){   
             if(x->rank < root-> rank){
                 root->left = x; 
             }else{
@@ -67,8 +60,6 @@ Node* insert(Node* x, Node *root){
     }
 }
 
-
-
 Node* zip(Node *x, Node *y){
 
     if(x == NULL){
@@ -88,26 +79,6 @@ Node* zip(Node *x, Node *y){
     }
 
 }
-
-
-
-
-
-/*
-
-function delete(x, root) if x.key=root.key then return zip(root.left, root.right) 
-if x.key<root.key then
-       if x.key=root.left.key then
-            root.left←{{zip(}}{\emph{root.left.left, root.left.right}}{{%
-)}}
-      else delete(x, root.left)
-else
-       if x.key=root.right.key then
-            root.right←{{zip(}}{\emph{root.right.left, root.right.right}}%
-{{)}}
-      else delete(x, root.right)
-return root
-*/
 
 Node* delete(Node* x, Node* root){
 
