@@ -18,29 +18,55 @@ void createNode(int x){
 
 
 
-/*
-
-function insert(x, root) if root=null then {x.left←x.right←null; x.rank←RandomRank; return x} if x.key<root.key then
-       if {{insert(}}{\emph{x, root.left}}{{)}}=x then
-             if x.rank<root.rank then root.left←x else {root.left←x.right; x.right←root; return x}
-else
-       if {{insert(}}{\emph{x, root.right}}{{)}}=x then
-             if x.rank≤root.rank then root.right←x else {root.right←x.left; x.left←root; return x}
-return root
-*/
-
-Node* insert(int x, Node *root){
-
-    createNode(x);
-
-    if(root == NULL){
 
 
-    return root;
+
+
+
+Node* insert(Node* x, Node *root){
+
+    //x->key = x; need to make sure i create the node with a key value before
+    // need to make sure a node is created before insertion probably
+
+    if(root == NULL){  
+        
+        
+        x->right = NULL;
+        x->left = NULL;
+        x->rank = randomRank();
+        return x;
     }
 
+    if(x < root->key){
 
+        if(insert(x, root->left) ==x ){   
+            if(x->rank < root-> rank){
+                root->left = x; 
+            }else{
+                root->left = x->right; 
+                x->right =root; 
+                return x;
+            }
+        }
+            
+
+    }else{
+
+        if(insert(x, root->right) == x){
+             if(x->rank <= root-> rank){
+                root->right = x;
+            }
+            else{
+                root->right = x->left; 
+                x->left=root; 
+                return x;
+            }
+
+
+        }
+    }
 }
+
 
 
 Node* zip(Node *x, Node *y){
@@ -140,6 +166,6 @@ int main(void){
     
     srand(time());
 
-    Node root = NULL;
+    Node* root = NULL;
 
 }
