@@ -29,18 +29,21 @@ else
 return root
 */
 
-void insert(int x, Node *root){
+Node* insert(int x, Node *root){
 
     createNode(x);
 
     if(root == NULL){
-        
+
+
+    return root;
     }
+
 
 }
 
 
-Node zip(Node *x, Node *y){
+Node* zip(Node *x, Node *y){
 
     if(x == NULL){
         return y;
@@ -58,7 +61,6 @@ Node zip(Node *x, Node *y){
         return x;
     }
 
-
 }
 
 
@@ -67,7 +69,8 @@ Node zip(Node *x, Node *y){
 
 /*
 
-function delete(x, root) if x.key=root.key then return zip(root.left, root.right) if x.key<root.key then
+function delete(x, root) if x.key=root.key then return zip(root.left, root.right) 
+if x.key<root.key then
        if x.key=root.left.key then
             root.left←{{zip(}}{\emph{root.left.left, root.left.right}}{{%
 )}}
@@ -80,20 +83,33 @@ else
 return root
 */
 
-void delete(int x, Node *root){
+Node* delete(Node* x, Node* root){
 
     if(x == root->key){
-
+        return zip(root->left, root->right);
     }
 
-    if(x == root->key){
+    if(x < root->key){
 
+        if(x->key == root->left->key){
+
+            root->left = zip(root->left->left, root->left->right);
+
+        }else{
+            delete(x, root->left);
+        }
     }else{
 
+        if(x->key == root->right->key){
+
+            root->right = zip(root->right->left, root->right->right);
+
+        }else{
+            delete(x, root->right);
+        }
     }
 
-    
-
+    return root;
 }
 
 int search(int x, Node *root){
