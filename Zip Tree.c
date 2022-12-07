@@ -123,14 +123,13 @@ Node* delete(Node* x, Node* root){
     return root;
 }
 
-int search(int x, Node *root){
+int search(int x, Node* root){
     
     if(x == root->key){
             
     }
 
 }
-
 
 void inorderTraversal(Node* root){
 
@@ -139,7 +138,7 @@ void inorderTraversal(Node* root){
     }
 
     inorderTraversal(root->left);
-    printf(" %d , %d \n", root->key, root->rank);
+    printf(" %d  |  %d \n", root->key, root->rank);
     inorderTraversal(root->right);
 
 }
@@ -152,7 +151,7 @@ void postorderTraversal(Node* root){
 
     postorderTraversal(root->left);
     postorderTraversal(root->right);
-    printf(" %d , %d \n", root->key, root->rank);
+    printf(" %d  |  %d \n", root->key, root->rank);
 
 }
 
@@ -162,11 +161,21 @@ void preorderTraversal(Node* root){
         return;
     }
 
-    printf(" %d , %d \n", root->key, root->rank);
+    printf(" %d  |  %d \n", root->key, root->rank);
     preorderTraversal(root->left);
     preorderTraversal(root->right);    
 
 }
+
+void freeTree(Node* node){
+
+    freeTree(node->left);
+    freeTree(node->right); 
+
+    free(node);
+
+}
+
 
 int main(void){
     
@@ -180,14 +189,19 @@ int main(void){
         insert(newNode, root);
     }
 
-    printf("Pre-order Traversal");
+    printf("Pre-order Traversal\n");
+    printf("Key | Rank\n");
     preorderTraversal(root);
     
-    printf("in-order Traversal");
+    printf("In-order Traversal\n");
+    printf("Key | Rank\n");
     inorderTraversal(root);
 
-    printf("post-order Traversal");
+    printf("Post-order Traversal\n");
+    printf("Key | Rank\n");
     postorderTraversal(root);
+
+    //freeTree(root);
 
     return 0;
 }
