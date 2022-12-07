@@ -26,10 +26,11 @@ int randomRank(){
 }
 
 
-Node* createNode(int x){
+Node* createNode(int x, int y){
 
     Node* xNode = malloc(sizeof(*xNode));
     xNode->key = x;
+    xNode->item = y;
     xNode->rank = randomRank();
     xNode->right = NULL;
     xNode->left = NULL;
@@ -126,13 +127,23 @@ Node* delete(Node* x, Node* root){
     return root;
 }
 
-int search(int x, Node* root){
+
+void search(int x, Node* root){
+
+    if(root == NULL){
+        return;
+    }
     
     if(x == root->key){
-            
+        printf("Node Found\n");
+        printf("Item at Node: %d\n",root->item);
     }
+    
+    search(x, root->left);
+    search(x, root->right);
 
 }
+
 
 void inorderTraversal(Node* root){
 
@@ -175,7 +186,7 @@ void freeTree(Node* node){
     if(node == NULL){
         return;
     }
-    
+
     freeTree(node->left);
     freeTree(node->right); 
 
@@ -188,11 +199,11 @@ int main(void){
     
     srand(time(0));
 
-    Node* root = createNode(0);
+    Node* root = createNode(0,200);
     Node* newNode = NULL;
 
     for(int i = 1; i < 10; i++){
-        newNode = createNode(i);
+        newNode = createNode(i, (i*randomRank()));
         root = insert(newNode, root);
     }
 
@@ -207,6 +218,8 @@ int main(void){
     printf("Post-order Traversal\n");
     printf("Key | Rank\n");
     postorderTraversal(root);
+
+    search(0, root);
 
     freeTree(root);
 
