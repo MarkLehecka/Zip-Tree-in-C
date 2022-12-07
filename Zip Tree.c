@@ -29,20 +29,20 @@ int randomRank(){
 Node* createNode(int x){
 
     Node* xNode = malloc(sizeof(*xNode));
-
-    
     xNode->key = x;
     xNode->rank = randomRank();
     xNode->right = NULL;
     xNode->left = NULL;
+    
 
     return xNode;
 
 }
 
-Node* insert(Node* x, Node *root){
+Node* insert(Node* x, Node* root){
 
-    if(root == NULL){  
+    if(root == NULL){
+        
         return x;
     }
 
@@ -72,6 +72,7 @@ Node* insert(Node* x, Node *root){
 
         }
     }
+    return root;
 }
 
 Node* zip(Node *x, Node *y){
@@ -79,6 +80,7 @@ Node* zip(Node *x, Node *y){
     if(x == NULL){
         return y;
     }
+
     if(y == NULL){
         return x;
     }
@@ -93,6 +95,7 @@ Node* zip(Node *x, Node *y){
     }
 
 }
+
 
 Node* delete(Node* x, Node* root){
 
@@ -169,6 +172,10 @@ void preorderTraversal(Node* root){
 
 void freeTree(Node* node){
 
+    if(node == NULL){
+        return;
+    }
+    
     freeTree(node->left);
     freeTree(node->right); 
 
@@ -182,11 +189,11 @@ int main(void){
     srand(time(0));
 
     Node* root = createNode(0);
-    Node* newNode;
+    Node* newNode = NULL;
 
     for(int i = 1; i < 10; i++){
         newNode = createNode(i);
-        insert(newNode, root);
+        root = insert(newNode, root);
     }
 
     printf("Pre-order Traversal\n");
@@ -201,7 +208,7 @@ int main(void){
     printf("Key | Rank\n");
     postorderTraversal(root);
 
-    //freeTree(root);
+    freeTree(root);
 
     return 0;
 }
