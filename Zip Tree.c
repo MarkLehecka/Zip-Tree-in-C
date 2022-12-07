@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 
 typedef struct node{
@@ -11,26 +12,41 @@ typedef struct node{
     struct node *right;
 }Node;
 
+int randomRank(){
+    
+    int count = 0;
+    int coin = 0;
+  
+    while(coin != 1){
+        coin = rand()/(RAND_MAX/3); 
+        count++;
+    }
 
-void createNode(int x){
+    return count;
+}
+
+
+Node* createNode(int x){
+
+    Node* xNode = malloc(sizeof(*xNode));
+
+    
+    xNode->key = x;
+    xNode->rank = randomRank();
+    xNode->right = NULL;
+    xNode->left = NULL;
+
+    return xNode;
 
 }
 
 Node* insert(Node* x, Node *root){
 
-    //x->key = x; need to make sure i create the node with a key value before
-    // need to make sure a node is created before insertion probably
-
     if(root == NULL){  
-        
-        
-        x->right = NULL;
-        x->left = NULL;
-        x->rank = randomRank();
         return x;
     }
 
-    if(x < root->key){
+    if(x->key < root->key){
 
         if(insert(x, root->left) == x){   
             if(x->rank < root-> rank){
@@ -42,7 +58,6 @@ Node* insert(Node* x, Node *root){
             }
         }
             
-
     }else{
 
         if(insert(x, root->right) == x){
@@ -81,11 +96,11 @@ Node* zip(Node *x, Node *y){
 
 Node* delete(Node* x, Node* root){
 
-    if(x == root->key){
+    if(x->key == root->key){
         return zip(root->left, root->right);
     }
 
-    if(x < root->key){
+    if(x->key < root->key){
 
         if(x->key == root->left->key){
 
@@ -116,18 +131,6 @@ int search(int x, Node *root){
 
 }
 
-int randomRank(){
-    
-    int count = 0;
-    int coin = 0;
-  
-    while(coin != 1){
-        coin = rand()/(RAND_MAX/3); 
-        count++;
-    }
-
-    return count;
-}
 
 void inorderTraversal(Node* root){
 
@@ -136,7 +139,7 @@ void inorderTraversal(Node* root){
     }
 
     inorderTraversal(root->left);
-    printf("Here is the key of the node: %d \n", root->key);
+    printf(" %d , %d \n", root->key, root->rank);
     inorderTraversal(root->right);
 
 }
@@ -149,7 +152,7 @@ void postorderTraversal(Node* root){
 
     postorderTraversal(root->left);
     postorderTraversal(root->right);
-    printf("Here is the key of the node: %d \n", root->key);
+    printf(" %d , %d \n", root->key, root->rank);
 
 }
 
@@ -159,21 +162,32 @@ void preorderTraversal(Node* root){
         return;
     }
 
-    printf("Here is the key of the node: %d \n", root->key);
+    printf(" %d , %d \n", root->key, root->rank);
     preorderTraversal(root->left);
-    preorderTraversal(root->right);
-    
+    preorderTraversal(root->right);    
 
 }
-
-
 
 int main(void){
     
     srand(time(0));
 
-    Node* root = NULL;
+    Node* root = createNode(0);
+    Node* newNode;
 
+    for(int i = 1; i < 10; i++){
+        newNode = createNode(i);
+        insert(newNode, root);
+    }
 
+    printf("Pre-order Traversal");
+    preorderTraversal(root);
+    
+    printf("in-order Traversal");
+    inorderTraversal(root);
 
+    printf("post-order Traversal");
+    postorderTraversal(root);
+
+    return 0;
 }
