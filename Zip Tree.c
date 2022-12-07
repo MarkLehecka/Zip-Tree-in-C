@@ -55,7 +55,6 @@ Node* insert(Node* x, Node *root){
                 return x;
             }
 
-
         }
     }
 }
@@ -118,16 +117,52 @@ int search(int x, Node *root){
 }
 
 int randomRank(){
+    
     int count = 0;
     int coin = 0;
   
     while(coin != 1){
         coin = rand()/(RAND_MAX/3); 
         count++;
-
     }
 
     return count;
+}
+
+void inorderTraversal(Node* root){
+
+    if(root == NULL){
+        return;
+    }
+
+    inorderTraversal(root->left);
+    printf("Here is the key of the node: %d \n", root->key);
+    inorderTraversal(root->right);
+
+}
+
+void postorderTraversal(Node* root){
+
+    if(root == NULL){
+        return;
+    }
+
+    postorderTraversal(root->left);
+    postorderTraversal(root->right);
+    printf("Here is the key of the node: %d \n", root->key);
+
+}
+
+void preorderTraversal(Node* root){
+
+    if(root == NULL){
+        return;
+    }
+
+    printf("Here is the key of the node: %d \n", root->key);
+    preorderTraversal(root->left);
+    preorderTraversal(root->right);
+    
 
 }
 
@@ -135,8 +170,10 @@ int randomRank(){
 
 int main(void){
     
-    srand(time());
+    srand(time(0));
 
     Node* root = NULL;
+
+
 
 }
