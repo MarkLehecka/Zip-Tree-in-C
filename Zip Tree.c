@@ -2,215 +2,248 @@
 #include <stdlib.h>
 #include <time.h>
 
+typedef struct node
+{
 
-typedef struct node{
-    
     int item;
     int key;
     int rank;
     struct node *left;
     struct node *right;
-}Node;
+} Node;
 
-int randomRank(){
-    
+/*
+Rank currently not determined properly, but for showcasing purpose it works.
+Rank should be chosen " independently from a geometric distribution with mean 1:
+the rank of a node is non-negative integer k with probability: (1/2)^(k+1)"
+*/
+
+int randomRank()
+{
+
     int count = 0;
     int coin = 0;
-  
-    while(coin != 1){
-        coin = rand()/(RAND_MAX/3); 
+
+    while (coin != 1)
+    {
+        coin = rand() / (RAND_MAX / 3);
         count++;
     }
 
     return count;
 }
 
+Node *createNode(int x, int y)
+{
 
-Node* createNode(int x, int y){
-
-    Node* xNode = malloc(sizeof(*xNode));
+    Node *xNode = malloc(sizeof(*xNode));
     xNode->key = x;
     xNode->item = y;
     xNode->rank = randomRank();
     xNode->right = NULL;
     xNode->left = NULL;
-    
 
     return xNode;
-
 }
 
-Node* insert(Node* x, Node* root){
+Node *insert(Node *x, Node *root)
+{
 
-    if(root == NULL){
-        
+    if (root == NULL)
+    {
+
         return x;
     }
 
-    if(x->key < root->key){
+    if (x->key < root->key)
+    {
 
-        if(insert(x, root->left) == x){   
-            if(x->rank < root-> rank){
-                root->left = x; 
-            }else{
-                root->left = x->right; 
-                x->right =root; 
+        if (insert(x, root->left) == x)
+        {
+            if (x->rank < root->rank)
+            {
+                root->left = x;
+            }
+            else
+            {
+                root->left = x->right;
+                x->right = root;
                 return x;
             }
         }
-            
-    }else{
+    }
+    else
+    {
 
-        if(insert(x, root->right) == x){
-             if(x->rank <= root-> rank){
+        if (insert(x, root->right) == x)
+        {
+            if (x->rank <= root->rank)
+            {
                 root->right = x;
             }
-            else{
-                root->right = x->left; 
-                x->left=root; 
+            else
+            {
+                root->right = x->left;
+                x->left = root;
                 return x;
             }
-
         }
     }
     return root;
 }
 
-Node* zip(Node *x, Node *y){
+Node *zip(Node *x, Node *y)
+{
 
-    if(x == NULL){
+    if (x == NULL)
+    {
         return y;
     }
 
-    if(y == NULL){
+    if (y == NULL)
+    {
         return x;
     }
 
-
-    if(x->rank < y->rank){
+    if (x->rank < y->rank)
+    {
         y->left = zip(x, y->left);
         return y;
-    }else{
+    }
+    else
+    {
         x->right = zip(x->right, y);
         return x;
     }
-
 }
 
+Node *delete(Node *x, Node *root)
+{
 
-Node* delete(Node* x, Node* root){
-
-    if(x->key == root->key){
+    if (x->key == root->key)
+    {
         return zip(root->left, root->right);
     }
 
-    if(x->key < root->key){
+    if (x->key < root->key)
+    {
 
-        if(x->key == root->left->key){
+        if (x->key == root->left->key)
+        {
 
             root->left = zip(root->left->left, root->left->right);
-
-        }else{
-            delete(x, root->left);
         }
-    }else{
+        else
+        {
+            delete (x, root->left);
+        }
+    }
+    else
+    {
 
-        if(x->key == root->right->key){
+        if (x->key == root->right->key)
+        {
 
             root->right = zip(root->right->left, root->right->right);
-
-        }else{
-            delete(x, root->right);
+        }
+        else
+        {
+            delete (x, root->right);
         }
     }
 
     return root;
 }
 
+void search(int x, Node *root)
+{
 
-void search(int x, Node* root){
-
-    if(root == NULL){
+    if (root == NULL)
+    {
         return;
     }
-    
-    if(x == root->key){
+
+    if (x == root->key)
+    {
         printf("Node Found\n");
-        printf("Item at Node: %d\n",root->item);
+        printf("Item at Node: %d\n", root->item);
     }
-    
+
     search(x, root->left);
     search(x, root->right);
-
 }
 
+void inorderTraversal(Node *root)
+{
 
-void inorderTraversal(Node* root){
-
-    if(root == NULL){
+    if (root == NULL)
+    {
         return;
     }
 
     inorderTraversal(root->left);
     printf(" %d  |  %d \n", root->key, root->rank);
     inorderTraversal(root->right);
-
 }
 
-void postorderTraversal(Node* root){
+void postorderTraversal(Node *root)
+{
 
-    if(root == NULL){
+    if (root == NULL)
+    {
         return;
     }
 
     postorderTraversal(root->left);
     postorderTraversal(root->right);
     printf(" %d  |  %d \n", root->key, root->rank);
-
 }
 
-void preorderTraversal(Node* root){
+void preorderTraversal(Node *root)
+{
 
-    if(root == NULL){
+    if (root == NULL)
+    {
         return;
     }
 
     printf(" %d  |  %d \n", root->key, root->rank);
     preorderTraversal(root->left);
-    preorderTraversal(root->right);    
-
+    preorderTraversal(root->right);
 }
 
-void freeTree(Node* node){
+void freeTree(Node *node)
+{
 
-    if(node == NULL){
+    if (node == NULL)
+    {
         return;
     }
 
     freeTree(node->left);
-    freeTree(node->right); 
+    freeTree(node->right);
 
     free(node);
-
 }
 
+int main(void)
+{
 
-int main(void){
-    
     srand(time(0));
 
-    Node* root = createNode(0,200);
-    Node* newNode = NULL;
+    Node *root = createNode(0, 200);
+    Node *newNode = NULL;
 
-    for(int i = 1; i < 10; i++){
-        newNode = createNode(i, (i*randomRank()));
+    for (int i = 1; i < 10; i++)
+    {
+        newNode = createNode(i, (i * randomRank()));
         root = insert(newNode, root);
     }
 
     printf("Pre-order Traversal\n");
     printf("Key | Rank\n");
     preorderTraversal(root);
-    
+
     printf("In-order Traversal\n");
     printf("Key | Rank\n");
     inorderTraversal(root);
