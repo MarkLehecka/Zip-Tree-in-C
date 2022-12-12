@@ -12,12 +12,6 @@ typedef struct node
     struct node *right;
 } Node;
 
-/*
-Rank currently not determined properly, but for showcasing purpose it works.
-Rank should be chosen " independently from a geometric distribution with mean 1:
-the rank of a node is non-negative integer k with probability: (1/2)^(k+1)"
-*/
-
 int randomRank()
 {
 
